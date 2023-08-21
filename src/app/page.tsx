@@ -1,61 +1,20 @@
-import Link from "next/link";
+import { serverClient } from "./_trpc/serverClient";
 
-export default async function Index() {
+export default async function Home() {
+  const res = await serverClient.greeting.hello();
+  const users = await serverClient.user.getUsers();
   return (
-    <>
-      <h1>
-        Next.js + TypeScript + Tailwind CSS + TRPC + Drizzle ORM + Neon Postgres
-      </h1>
-      <h3>Showcase Pages</h3>
-      <ul
-        style={{
-          listStyle: "disc",
-          listStylePosition: "inside",
-          padding: 0,
-        }}
-      >
-        <li>
-          <Link
-            href="/rsc"
-            style={{
-              color: "hsla(210, 16%, 80%, 1)",
-            }}
-          >
-            React Server Components
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/client"
-            style={{
-              color: "hsla(210, 16%, 80%, 1)",
-            }}
-          >
-            Client Side Data Fetching
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/server-action"
-            style={{
-              color: "hsla(210, 16%, 80%, 1)",
-            }}
-          >
-            Server Action
-          </Link>
-        </li>
+    <main className="flex min-h-screen flex-col items-center p-24 gap-10">
+      {res}
 
-        <li>
-          <Link
-            href="/post-example"
-            style={{
-              color: "hsla(210, 16%, 80%, 1)",
-            }}
-          >
-            Full stack Post Example
-          </Link>
-        </li>
-      </ul>
-    </>
+      <section>
+        <h1 className="text-xl font-bold">Users</h1>
+        {users.map((user) => (
+          <div key={user.id}>
+            {user.id} - {user.fullName}
+          </div>
+        ))}
+      </section>
+    </main>
   );
 }

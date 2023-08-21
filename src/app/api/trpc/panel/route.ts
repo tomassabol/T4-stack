@@ -1,10 +1,11 @@
 import { renderTrpcPanel } from "trpc-panel";
-import { appRouter } from "~/server/routers/_app";
+import { appRouter } from "~/server";
 
-const panelHandler = () => {
+const handler = () => {
   return new Response(
     renderTrpcPanel(appRouter, {
-      url: "http://localhost:3000/api/trpc",
+      url:
+        process.env.NODE_ENV + "/api/trpc" ?? "http://localhost:3000/api/trpc",
       transformer: "superjson",
     }),
     {
@@ -13,4 +14,4 @@ const panelHandler = () => {
   );
 };
 
-export { panelHandler as GET, panelHandler as POST };
+export { handler as GET, handler as POST };
